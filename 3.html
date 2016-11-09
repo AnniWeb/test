@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <style>
+    .rating {}
+    .rating-stars {
+        font-size: 0px;
+    }
+    .rating-stars i {
+        cursor: pointer;
+        display: inline-block;
+        width: 16px;
+        height: 15px;
+        background-repeat: no-repeat;
+        background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAQAAACxD+fXAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAQNJREFUKM9juMqABt2uyiDz/wMhw0V0uOpiLTIfrOgMKhQ+8/PM/TNMCBGwomOoMP/YfyB0QYiAFe1HhZf2/wfCFQgRsKLtrNsF4dB++38w/LldAUmUiWE9x/oF6//jhL/WF65nZFgOgvnLfy//jwU+WW4Ltm4+BDrOfz3/PxrcOV90PsRN02FQYfrr6f+R4JzpzCBxsKJ+GOTp/9n/HwnOg4iDFbXDYED7fxT4rp0VJA5W1ACDMxv+A+GLhpCGooavYLYHSBysqAoGH1b9r1pQJQRmK1XtBfLmgthgRaUQqFv6oNS9lAEOGUvTSu+WspZCFBVCoHohbyEDGpQuFCsEKwIAWekc64p2d3oAAAAASUVORK5CYII=');
+        margin-left: 2px;
+    }
+    .rating-stars .select,
+    .rating-stars .active,
+    .rating-stars i:hover {
+        background-image:  url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAQCAYAAAAbBi9cAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAUpJREFUeNqM0s8rBkEYwPHZ175KSb2Rs3Jw4uYfQHrdXN6DUsgrdw7+CYUrObg6uSikKEdJOThyQb1IvbEveWN9Z9/H2tkfs6Y+O7M7T8/OPDOO31B5bRzXuEud7fCDrqCaPO2qmMucl+b4NetquvEg+vGdiOhtrchVH9ZE02hHH0ZwnBXoKnuN5iPjqi2R41+oIn1nytwQTiPvnxhAPSW27ipPtTFYw0zO6ekt3sa+6XKvYF0n0lWaxSVWg+3+r91jSpX9s1aN3sKJDVxhFz05SY7kIJ7+iu0ZAScYxrkl2TYW8WWempcIfEaXZTWFeJKsRGNS2Kw2KStqmtnfeZomIuMaKlhGQ76VMBrGhCtK3uyy9DtYwou872FLbngFB+bWzESD8CXZYewHN7LtBbk7xej2XHOnwe3VyV4z6qN/sol9lPD4O/EjwAChWmbxG1tNbAAAAABJRU5ErkJggg==');
+    }
+    .rating-btn {
+        margin-top: 20px;
+        font-family: Verdana, Geneva CY, DejaVu Sans, sans-serif;
+        font-size: 11px;
+        line-height: 1;
+        cursor: pointer;
+        padding: 2px 20px 3px;
+        -moz-border-radius: 100%;
+        -webkit-border-radius: 100%;
+        border-radius: 10px;
+        box-shadow: none;
+        border: 1px solid #a8a8a8;
+        background: #f2f2f2; /* Old browsers */
+        background: -moz-linear-gradient(top, #f2f2f2 30%, #e2e2e2 70%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #f2f2f2 30%,#e2e2e2 70%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #f2f2f2 30%,#e2e2e2 70%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f2f2f2', endColorstr='#e2e2e2',GradientType=0 );
+    }
+    .rating-btn.active {
+        box-shadow: inset 0 2px 3px rgba(0,0,0,0.26);
+    }
+    .rating-btn:hover {
+        background: #feffeb; /* Old browsers */
+        background: -moz-linear-gradient(top, #feffeb 30%, #fdffcc 70%); /* FF3.6-15 */
+        background: -webkit-linear-gradient(top, #feffeb 30%,#fdffcc 70%); /* Chrome10-25,Safari5.1-6 */
+        background: linear-gradient(to bottom, #feffeb 30%,#fdffcc 70%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffeb', endColorstr='#fdffcc',GradientType=0 ); 
+        border-color: rgba(0,0,0,0.3);
+    }
+    .rating-btn:focus {
+        border: none;
+        box-shadow: 0 0 4px rgba(0,35,214,0.94);
+    }
+</style>
+</head>
+<body>
+
+
+<div class='rating'>
+    <div class='rating-stars' data-rating-cur='2' data-rating-max='5'  data-rating-sel=''></div>
+    <input class='rating-val' type='hidden' name='rating' value='' />
+    <button class='rating-btn' type='submit'>Кнопка</button>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script>
+(function($){
+	"use strict";
+	$.fn.rating = function() {
+        var stars = $(this).find('.rating-stars');
+        for (var i = 1; i <= $(stars).data('rating-max'); i++) {
+            var c = $(stars).data('rating-cur') >= i ? ' class="active"' : '';
+            $(stars).append('<i'+c+'></i>');
+        }
+	};
+}( jQuery ));
+$(document).ready(function(){
+   $('.rating').rating();
+   $('.rating-stars i')
+    .hover(function(){
+        $(this).nextAll().removeClass('select');
+        $(this).prevAll().addClass('select');
+    }, function(){
+        $(this).prevAll().removeClass('select');
+    })
+    .click(function(){
+        $(this).addClass('active').prevAll().addClass('active');
+        $(this).nextAll().removeClass('active');
+        $(this).parent().data('rating-sel', $(this).index()+1);
+    });
+    $('.rating-btn').click(function(){
+        $(this).addClass('active');
+    });
+});
+    
+</script>
+</body>
+</html>
